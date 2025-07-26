@@ -3,13 +3,16 @@ package org.cts.app.service;
 import org.cts.app.dto.StudentInfoDto;
 import org.cts.app.entity.StudentInfoTable;
 import org.cts.app.repository.StudentInfoRepository;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class StudentService {
@@ -49,7 +52,8 @@ public class StudentService {
             }
             studentInfoTable.setStudRegId(maxRedId);
             studentInfoRepository.save(studentInfoTable);
-
-        return new ResponseEntity<>("DataSaved", HttpStatus.OK);
+        Map<String, String> response = new HashMap<>();
+        response.put("RegistrationId",maxRedId);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }
