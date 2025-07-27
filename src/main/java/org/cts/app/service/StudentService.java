@@ -3,7 +3,7 @@ package org.cts.app.service;
 import org.cts.app.dto.StudentInfoDto;
 import org.cts.app.entity.StudentInfoTable;
 import org.cts.app.repository.StudentInfoRepository;
-import org.json.JSONObject;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -52,8 +52,20 @@ public class StudentService {
             }
             studentInfoTable.setStudRegId(maxRedId);
             studentInfoRepository.save(studentInfoTable);
-        Map<String, String> response = new HashMap<>();
-        response.put("RegistrationId",maxRedId);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        JSONObject jsonObject=new JSONObject();
+        jsonObject.put("RegistrationId",maxRedId);
+        return new ResponseEntity<>(jsonObject, HttpStatus.OK);
+    }
+
+    public ResponseEntity<?> getStudentLoginDetails(String regId,String password){
+        List<StudentInfoTable> getStudentLoginDetails=studentInfoRepository.studentInfoLoginDetails(regId,password);
+        if (!ObjectUtils.isEmpty(getStudentLoginDetails)){
+            JSONObject jsonObject=new JSONObject();
+            jsonObject.put("StudentDetails",getStudentLoginDetails);
+            return new ResponseEntity<>(jsonObject,HttpStatus.OK);
+        }
+        else {
+            return new ResponseEntity<>("No details found for provided credentials",HttpStatus.NOT_FOUND);
+        }
     }
 }
