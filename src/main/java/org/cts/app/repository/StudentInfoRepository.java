@@ -19,4 +19,7 @@ public interface StudentInfoRepository extends JpaRepository<StudentInfoTable,Lo
 
     @Query(value = "select * from student_info_table where stud_reg_id=:regId and stud_pwd=:password",nativeQuery = true)
     List<StudentInfoTable> studentInfoLoginDetails(String regId ,String password);
+
+    @Query(value = "select * from student_info_table where stud_reg_ID=:studeRegID",nativeQuery = true)
+    StudentInfoTable getDetailsOnRegId(String regID);
 }
